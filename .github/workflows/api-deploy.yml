@@ -5,12 +5,12 @@ on:
     branches: [ main ]
     paths:
       - 'Backend/**'
-      - '.github/workflows/backend-ci.yml'
+      - '.github/workflows/api-deploy.yml'
   pull_request:
     branches: [ main ]
     paths:
       - 'Backend/**'
-      - '.github/workflows/backend-ci.yml'
+      - '.github/workflows/api-deploy.yml'
 
 jobs:
   build-and-test:
@@ -33,14 +33,14 @@ jobs:
         run: dotnet restore ShopEase.Api/ShopEase.Api.csproj
 
       - name: Build
-        run: dotnet build ShopEase.Api/ShopEase.Api.csproj --no-restore --configuration Release
+        run: dotnet build ShopEase/Backend/ShopEase.Api/ShopEase.Api.csproj --no-restore --configuration Release
 
       - name: Test
-        run: dotnet test tests/ShopEase.Api.Tests/ShopEase.Api.Tests.csproj --configuration Release --logger "trx;LogFileName=test-results.trx"
+        run: dotnet test ShopEase/Backend/tests/ShopEase.Api.Tests/ShopEase.Api.Tests.csproj --configuration Release --logger "trx;LogFileName=test-results.trx"
 
       - name: Publish test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-results
-          path: Backend/tests/ShopEase.Api.Tests/TestResults/test-results.trx
+          path: ShopEase/Backend/tests/ShopEase.Api.Tests/TestResults/test-results.trx
