@@ -5,7 +5,10 @@ on:
     branches:
       - main
     paths:
-      - 'Application.Api/**'
+      - 'Backend/ShopEase.Api/**'
+      - 'Backend/ShopEase.Application/**'
+      - 'Backend/ShopEase.Domain/**'
+      - 'Backend/ShopEase.Infrastructure/**'
 
   workflow_dispatch:
 
@@ -22,13 +25,12 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Publish
-        run: dotnet publish Application.Api/Application.Api.csproj -c Release -o ./publish
+      - name: Publish API
+        run: dotnet publish Backend/ShopEase.Api/ShopEase.Api.csproj -c Release -o ./publish
 
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v3
         with:
-          app-name: shopease-capstone-api
+          app-name: shopease-api
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ./publish
-          
